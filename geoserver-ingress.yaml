@@ -1,20 +1,38 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: geoserver-ingress
+  name: domain-ingress
   namespace: geoserver
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
 spec:
   ingressClassName: nginx
   rules:
-  - host: 127.0.0.1.nip.io
+  - host: geoserver.127.0.0.1.nip.io
     http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: geoserver
+            port:
+              number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: path-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
       paths:
       - path: /geoserver
         pathType: Prefix
         backend:
           service:
-            name: geoserver-service
+            name: geoserver
             port:
               number: 8080
+

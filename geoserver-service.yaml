@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: geoserver-service
+  name: geoserver
   namespace: geoserver
 spec:
   selector:
